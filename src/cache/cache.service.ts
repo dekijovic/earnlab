@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import {Inject, Injectable} from '@nestjs/common';
 import { Redis } from 'ioredis';
 
 @Injectable()
 export class CacheService {
-  constructor(private readonly redis: Redis) {}
+  constructor(@Inject('REDIS_CLIENT') private readonly redis: Redis) {}
+
 
   async setUserBalance(userId: string, balance: number) {
     await this.redis.set(`user:${userId}:balance`, balance);

@@ -1,20 +1,23 @@
 import { Module } from '@nestjs/common';
-import { CacheService } from './cache.service';
-import Redis from 'ioredis';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Redis } from 'ioredis';
+import {CacheService} from "./cache.service";
 
 @Module({
+  imports: [ConfigModule],
   providers: [
     {
       provide: 'REDIS_CLIENT',
-      useFactory: () => {
+      useFactory: (configService: ConfigService) => {
         return new Redis({
-          host: process.env.REDIS_HOST || 'localhost',
-          port: +(process.env.REDIS_PORT || 6379),
+          host: configService.get<string>('REDIS_HOST', 'localhost'),
+          port: configService.get<number>('REDIS_PORT', 6379),
         });
       },
+      inject: [ConfigService],
     },
-    CacheService,
+      CacheService
   ],
-  exports: [CacheService],
+  exports: ['REDIS_CLIENT', CacheService],
 })
 export class CacheModule {}

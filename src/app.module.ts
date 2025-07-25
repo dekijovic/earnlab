@@ -7,7 +7,6 @@ import { ConfigModule } from '@nestjs/config';
 import { CreditsModule } from './credits/credits.module';
 import { EventsModule } from './events/events.module';
 import { CacheModule } from './cache/cache.module';
-import {BullModule} from "@nestjs/bull";
 import { QueueModule } from './queue/queue.module';
 
 @Module({
@@ -24,15 +23,6 @@ import { QueueModule } from './queue/queue.module';
       database: process.env.DATABASE_NAME,
       autoLoadEntities: true,
       synchronize: true, // set to false in production
-    }),
-    BullModule.forRoot({
-      redis: {
-        host: process.env.REDIS_HOST || 'localhost',
-        port: +(process.env.REDIS_PORT || 6379),
-      },
-    }),
-    BullModule.registerQueue({
-      name: 'audit',
     }),
     UsersModule,
     CreditsModule,

@@ -13,8 +13,6 @@ export class CreditsController {
   @Post('/deposit')
   createDeposit(@Body() dto: DepositDto) {
     return this.creditsService.depositCredits(dto);
-    //- Adds credits to user's balance.
-    // - Emits an event credits.deposited.
   }
 
   @Post('transfer')

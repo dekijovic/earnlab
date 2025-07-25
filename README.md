@@ -40,3 +40,5 @@ $ npm run test:cov
 Swagger is added to document the endpoints
 
 Bull Queue is used for background job for creditTransfer log
+
+Postgre and Redis are added via docker compose
